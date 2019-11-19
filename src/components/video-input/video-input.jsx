@@ -1,7 +1,8 @@
 import React, { useState, useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector, shallowEqual } from "react-redux";
 
 import { updateUrl } from "../../redux/video/actions";
+import { openModal } from "../../redux/modal/actions";
 
 import CustomButton from "../custom-button/custom-button";
 
@@ -9,6 +10,11 @@ import { VideoInputContainer, VideoInputForm } from "./video-input.styles";
 
 const VideoInput = () => {
   const [url, setUrl] = useState("");
+  const videoUrl = useSelector(state => state.video.videoUrl, shallowEqual);
+  const videoPlayerData = {
+    modalType: "VIDEO_PLAYER",
+    modalProps: {}
+  };
   const dispatch = useDispatch();
   const getVideoUrl = useCallback(
     url => {
@@ -21,6 +27,13 @@ const VideoInput = () => {
     },
     [dispatch]
   );
+  const openVideoInModal = useCallback(() => {
+    if (videoUrl !== "") {
+      dispatch(openModal(videoPlayerData));
+    } else {
+      alert("video url cannot be empty");
+    }
+  }, [dispatch, videoPlayerData, videoUrl]);
   const handleChange = event => {
     setUrl(event.target.value);
   };
@@ -37,7 +50,7 @@ const VideoInput = () => {
         />
         <CustomButton text={"Submit url"} onClick={() => getVideoUrl(url)} />
       </VideoInputForm>
-      <CustomButton text={"Open video"} />
+      <CustomButton text={"Open video"} onClick={openVideoInModal} />
     </VideoInputContainer>
   );
 };

@@ -17,7 +17,7 @@ const CounterManager = () => {
   // When passing a callback using dispatch to a child component, it is recommended to memoize it with useCallback,
   // since otherwise child components may render unnecessarily due to the changed reference.
   const incrementCount = useCallback(() => dispatch(counterAdd()), [dispatch]);
-  const decrementCount = useCallback(() => dispatch(counterSubtract), [
+  const decrementCount = useCallback(() => dispatch(counterSubtract()), [
     dispatch
   ]);
   const resetCount = useCallback(() => dispatch(counterReset()), [dispatch]);
