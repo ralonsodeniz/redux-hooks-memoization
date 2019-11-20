@@ -12,3 +12,11 @@ export const selectModalData = createSelector(
   [selectModal],
   modal => modal.modalData
 );
+export const selectModalType = createSelector(
+  [selectModalData],
+  modalData => modalData.modalType
+);
+export const selectModalProps = createSelector(
+  [selectModalData],
+  modalData => modalData.modalProps
+);

@@ -1,8 +1,9 @@
 import React, { lazy, Suspense, useCallback } from "react";
 import { useSelector, shallowEqual, useDispatch } from "react-redux";
+import { createStructuredSelector } from "reselect";
 
 import { closeModal } from "../../redux/modal/actions";
-import { selectModalData } from "../../redux/modal/selectors";
+import { selectModalType, selectModalProps } from "../../redux/modal/selectors";
 
 import Spinner from "../spinner/spinner";
 import OnClickOutSide from "../onclick-outside/onclick-outside";
@@ -22,9 +23,15 @@ const MODAL_OPTIONS = {
   VIDEO_PLAYER: lazyVideoPlayer
 };
 
+// we can create a structured selector object using createStructuredSelector from reselect using different selectors and then pass it to useSelector redux custom hook
+const getModalData = createStructuredSelector({
+  modalType: selectModalType,
+  modalProps: selectModalProps
+});
+
 const InnerModal = () => {
   const dispatch = useDispatch();
-  const modalData = useSelector(selectModalData, shallowEqual);
+  const modalData = useSelector(getModalData, shallowEqual);
   const closeModalOnClickOutside = useCallback(() => dispatch(closeModal()), [
     dispatch
   ]);
