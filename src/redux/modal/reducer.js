@@ -2,8 +2,10 @@ import { MODAL } from "./types";
 
 const INITIAL_STATE = {
   showModal: false,
-  modalType: "",
-  modalProps: {}
+  modalData: {
+    modalType: "",
+    modalProps: {}
+  }
 };
 
 const modalReducer = (state = INITIAL_STATE, action) => {
@@ -12,7 +14,7 @@ const modalReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         showModal: true,
-        ...action.payload
+        modalData: action.payload
       };
     case MODAL.CLOSE_MODAL:
       return {

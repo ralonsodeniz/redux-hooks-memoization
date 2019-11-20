@@ -3,6 +3,7 @@ import { useDispatch, useSelector, shallowEqual } from "react-redux";
 
 import { updateUrl } from "../../redux/video/actions";
 import { openModal } from "../../redux/modal/actions";
+import { selectVideoUrl } from "../../redux/video/selectors";
 
 import CustomButton from "../custom-button/custom-button";
 
@@ -10,7 +11,7 @@ import { VideoInputContainer, VideoInputForm } from "./video-input.styles";
 
 const VideoInput = () => {
   const [url, setUrl] = useState("");
-  const videoUrl = useSelector(state => state.video.videoUrl, shallowEqual);
+  const videoUrl = useSelector(selectVideoUrl, shallowEqual);
   const videoPlayerData = {
     modalType: "VIDEO_PLAYER",
     modalProps: {}

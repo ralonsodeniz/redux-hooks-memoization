@@ -2,6 +2,7 @@ import React, { lazy, Suspense, useCallback } from "react";
 import { useSelector, shallowEqual, useDispatch } from "react-redux";
 
 import { closeModal } from "../../redux/modal/actions";
+import { selectModalData } from "../../redux/modal/selectors";
 
 import Spinner from "../spinner/spinner";
 import OnClickOutSide from "../onclick-outside/onclick-outside";
@@ -23,13 +24,7 @@ const MODAL_OPTIONS = {
 
 const InnerModal = () => {
   const dispatch = useDispatch();
-  const modalData = useSelector(
-    state => ({
-      modalType: state.modal.modalType,
-      modalProps: state.modal.modalProps
-    }),
-    shallowEqual
-  );
+  const modalData = useSelector(selectModalData, shallowEqual);
   const closeModalOnClickOutside = useCallback(() => dispatch(closeModal()), [
     dispatch
   ]);

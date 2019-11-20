@@ -1,10 +1,12 @@
 import React from "react";
 import { useSelector, shallowEqual } from "react-redux";
 
+import { selectVideoUrl } from "../../redux/video/selectors";
+
 import { VideoFrame } from "./video-player.styles";
 
 const VideoPlayer = () => {
-  const videoUrl = useSelector(state => state.video.videoUrl, shallowEqual);
+  const videoUrl = useSelector(selectVideoUrl, shallowEqual);
   return (
     <VideoFrame
       src={videoUrl}

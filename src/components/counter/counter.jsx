@@ -4,13 +4,14 @@ import React, { useCallback } from "react";
 import { useSelector, shallowEqual, useDispatch } from "react-redux";
 
 import { openModal } from "../../redux/modal/actions";
+import { selectCount } from "../../redux/counter/selectors";
 
 import CustomButton from "../custom-button/custom-button";
 
 import { CounterContainer, CounterTextContainer } from "./counter.styles";
 
 const Counter = () => {
-  const count = useSelector(state => state.counter.count, shallowEqual);
+  const count = useSelector(selectCount, shallowEqual);
   const dispatch = useDispatch();
   const counterManagerData = {
     modalType: "COUNTER_MANAGER",
