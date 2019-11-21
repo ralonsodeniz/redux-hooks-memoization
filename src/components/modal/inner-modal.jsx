@@ -17,10 +17,14 @@ const lazyCounterManager = lazy(() =>
   import("../counter-manager/counter-manager")
 );
 const lazyVideoPlayer = lazy(() => import("../video-player/video-player"));
+const lazySystemMessage = lazy(() =>
+  import("../system-message/system-message")
+);
 
 const MODAL_OPTIONS = {
   COUNTER_MANAGER: lazyCounterManager,
-  VIDEO_PLAYER: lazyVideoPlayer
+  VIDEO_PLAYER: lazyVideoPlayer,
+  SYSTEM_MESSAGE: lazySystemMessage
 };
 
 // we can create a structured selector object using createStructuredSelector from reselect using different selectors and then pass it to useSelector redux custom hook

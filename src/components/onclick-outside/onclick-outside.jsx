@@ -14,7 +14,6 @@ const OnClickOutside = ({ children, action, enabled }) => {
 
   useEffect(() => {
     if (enabled) {
-      console.log("inside onclick");
       document.addEventListener("mousedown", handleClickOuside);
       document.addEventListener("touchstart", handleClickOuside);
     }

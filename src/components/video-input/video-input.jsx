@@ -6,6 +6,7 @@ import { openModal } from "../../redux/modal/actions";
 import { selectVideoUrl } from "../../redux/video/selectors";
 
 import CustomButton from "../custom-button/custom-button";
+import FormInput from "../form-input/form-input";
 
 import { VideoInputContainer, VideoInputForm } from "./video-input.styles";
 
@@ -16,6 +17,12 @@ const VideoInput = () => {
     modalType: "VIDEO_PLAYER",
     modalProps: {}
   };
+  const videoUrlEmptyData = {
+    modalType: "SYSTEM_MESSAGE",
+    modalProps: {
+      text: "Video url cannot be empty"
+    }
+  };
   const dispatch = useDispatch();
   const getVideoUrl = useCallback(
     url => {
@@ -23,18 +30,18 @@ const VideoInput = () => {
         dispatch(updateUrl(url));
         setUrl("");
       } else {
-        alert("video url cannot be empty");
+        dispatch(openModal(videoUrlEmptyData));
       }
     },
-    [dispatch]
+    [dispatch, videoUrlEmptyData]
   );
   const openVideoInModal = useCallback(() => {
     if (videoUrl !== "") {
       dispatch(openModal(videoPlayerData));
     } else {
-      alert("video url cannot be empty");
+      dispatch(openModal(videoUrlEmptyData));
     }
-  }, [dispatch, videoPlayerData, videoUrl]);
+  }, [dispatch, videoPlayerData, videoUrl, videoUrlEmptyData]);
   const handleChange = event => {
     setUrl(event.target.value);
   };
@@ -42,12 +49,14 @@ const VideoInput = () => {
   return (
     <VideoInputContainer>
       <VideoInputForm>
-        <input
+        <FormInput
           type="text"
+          id="videoUrl"
           value={url}
           name="videoUrl"
-          placeholder="Insert video url"
-          onChange={handleChange}
+          handleChange={handleChange}
+          required
+          label="Video URL"
         />
         <CustomButton text={"Submit url"} onClick={() => getVideoUrl(url)} />
       </VideoInputForm>
