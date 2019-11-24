@@ -18,9 +18,10 @@ const SignUp = () => {
     email: "",
     password: "",
     age: "",
-    gender: ""
+    gender: "",
+    country: ""
   });
-  const { displayName, email, password, age, gender } = userData;
+  const { displayName, email, password, age, gender, country } = userData;
   const dispatch = useDispatch();
   const handleChange = useCallback(
     event => {
@@ -41,7 +42,8 @@ const SignUp = () => {
         email: "",
         password: "",
         age: "",
-        gender: ""
+        gender: "",
+        country: ""
       });
     },
     [dispatch, userData]
@@ -94,6 +96,15 @@ const SignUp = () => {
           value={gender}
           handleChange={handleChange}
           label={"Gender"}
+          required
+        />
+        <FormInput
+          type="text"
+          id="country"
+          name="country"
+          value={country}
+          handleChange={handleChange}
+          label={"Country"}
           required
         />
         <SignUpButtonsContainer>

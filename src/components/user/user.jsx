@@ -4,8 +4,10 @@ import { useDispatch } from "react-redux";
 import { signOutStart } from "../../redux/user/actions";
 
 import CustomButton from "../custom-button/custom-button";
+import UserAvatar from "./user-avatar";
+import UserData from "./user-data";
 
-import { UserContainer } from "./user.styles";
+import { UserContainer, LogOutButtonContainer } from "./user.styles";
 
 const User = () => {
   const dispatch = useDispatch();
@@ -14,7 +16,11 @@ const User = () => {
   }, [dispatch]);
   return (
     <UserContainer>
-      <CustomButton type="button" text="Sign out" onClick={handleSignOut} />
+      <LogOutButtonContainer>
+        <CustomButton type="button" text="Sign out" onClick={handleSignOut} />
+      </LogOutButtonContainer>
+      <UserAvatar />
+      <UserData />
     </UserContainer>
   );
 };

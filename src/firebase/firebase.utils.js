@@ -33,25 +33,20 @@ export const checkUserProfileDocumentInFS = async (user, additionalData) => {
     const userSnapshot = await userRef.get();
 
     if (!userSnapshot.exists) {
-      const { displayName, email, photoUrl, providerData } = user;
+      const { displayName, email, photoURL, providerData, uid } = user;
       const createdAt = new Date();
-      const avatarUrl = photoUrl || "";
       const providerId = providerData[0].providerId;
-      let gender = "";
-      let age = 0;
-      if (additionalData) {
-        gender = additionalData.gender;
-        age = parseInt(additionalData.age);
-      }
       try {
         await userRef.set({
           displayName,
           email,
-          avatarUrl,
+          photoURL: photoURL ? photoURL : "",
           providerId,
+          uid,
           createdAt,
-          gender,
-          age
+          gender: additionalData ? additionalData.gender : "",
+          age: additionalData ? parseInt(additionalData.age) : 0,
+          country: additionalData ? additionalData.country : ""
         });
       } catch (error) {
         console.log("error while checking user", error);
@@ -65,7 +60,7 @@ export const checkUserProfileDocumentInFS = async (user, additionalData) => {
   return userRef;
 };
 
-export const getCurrentUserFromFB = () => {
+export const getCurrentUserFromAuth = () => {
   try {
     return new Promise((resolve, reject) => {
       const unsubscribe = auth.onAuthStateChanged(user => {
@@ -76,6 +71,56 @@ export const getCurrentUserFromFB = () => {
   } catch (error) {
     console.log("error checking if there is an user authenticated", error);
     throw new Error("Ooops something happened while checking users");
+  }
+};
+
+export const uploadFileToStorage = (
+  directory,
+  fileName,
+  file,
+  setProgress,
+  setLoading,
+  setFile,
+  action
+) => {
+  try {
+    const storageRef = storage.ref(`${directory}`); // we create the storage reference object seting the name of the folder where we want to save our
+    const documentFile = storageRef.child(`${fileName}`); // we create the file
+    const uploadTask = documentFile.put(file); // we create a task (function) to upload the image to the file. it returns an object that can be used to monitor and manage the upload (an observable)
+    const unsubscribe = uploadTask.on("state_changed", {
+      // we start an observable that has one event listener, on state_changed of the task and 3 functions, one while it is in progress, one when an error happens and the last when the upload is finished
+      next: snapshot => {
+        // this is if we want to present a progress bar
+        const percent = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProgress(percent);
+        setLoading(true);
+      },
+      error: error => {
+        console.log(error);
+        unsubscribe(); // we close the observable connection once there is an error or the upload is finished
+      },
+      complete: async () => {
+        await documentFile.getDownloadURL().then(url => action(url));
+        setLoading(false);
+        setFile(null);
+        unsubscribe();
+      }
+    });
+  } catch (error) {
+    throw new Error("Ooops error while uploading your file");
+  }
+};
+
+export const updateAvatarInFS = async url => {
+  const userId = auth.currentUser.uid;
+  try {
+    const userRef = firestore.doc(`users/${userId}`);
+    await userRef.update({ photoURL: url });
+  } catch (error) {
+    console.log("error updating avatar url", error);
+    throw new Error("Ooops something happened while updating your avatar");
   }
 };
 

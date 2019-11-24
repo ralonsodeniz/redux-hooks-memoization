@@ -7,7 +7,9 @@ import {
   signUpFailure,
   checkUserSessionEnd,
   signOutSuccess,
-  signOutFailure
+  signOutFailure,
+  updateAvatarSuccess,
+  updateAvatarFailure
 } from "./actions";
 import { openModal } from "../modal/actions";
 import {
@@ -15,7 +17,8 @@ import {
   googleAuthProvider,
   checkUserProfileDocumentInFS,
   actionCodeSettings,
-  getCurrentUserFromFB
+  getCurrentUserFromAuth,
+  updateAvatarInFS
 } from "../../firebase/firebase.utils";
 
 // util function to check if user is registered in FS or register it and return the user reference object
@@ -26,21 +29,25 @@ export function* getSnapshotFromUserAuth(user) {
     const {
       displayName,
       email,
-      photoUrl,
+      photoURL,
       providerId,
+      uid,
       createdAt,
       gender,
-      age
+      age,
+      country
     } = userSnapshot.data();
     yield put(
       signInSuccess({
         displayName,
         email,
-        photoUrl,
+        photoURL,
         providerId,
+        uid,
         createdAt,
         gender,
-        age
+        age,
+        country
       })
     );
     const signInSuccessModalData = {
@@ -59,6 +66,7 @@ export function* getSnapshotFromUserAuth(user) {
       }
     };
     yield put(openModal(sigInFailureModalData));
+    yield auth.signOut();
   }
 }
 
@@ -113,6 +121,7 @@ export function* signInWithGoogle() {
       }
     };
     yield put(openModal(sigInFailureModalData));
+    yield auth.signOut();
   }
 }
 
@@ -125,7 +134,6 @@ export function* signInWithEmail({ payload }) {
   const { email, password } = payload;
   try {
     const { user } = yield auth.signInWithEmailAndPassword(email, password);
-    console.log(user);
     // we check if the user has the email verified before signin
     if (
       !user.emailVerified &&
@@ -156,6 +164,7 @@ export function* signInWithEmail({ payload }) {
       }
     };
     yield put(openModal(emailSignInFailureModalData));
+    yield auth.signOut();
   }
 }
 
@@ -166,7 +175,7 @@ export function* onCheckUserSessionStart() {
 
 export function* isUserAuthenticated() {
   try {
-    const user = yield getCurrentUserFromFB(); // there is no need to call because this getCurrentUserFromFB is a Promise
+    const user = yield getCurrentUserFromAuth(); // there is no need to call because this getCurrentUserFromFB is a Promise
     if (!user) {
       yield put(checkUserSessionEnd());
       return;
@@ -212,6 +221,27 @@ export function* signOut() {
   }
 }
 
+// update user avatar
+export function* onUpdateAvatarStart() {
+  yield takeLatest(USER.UPDATE_AVATAR_START, updateAvatar);
+}
+
+export function* updateAvatar({ payload }) {
+  try {
+    yield call(updateAvatarInFS, payload);
+    yield put(updateAvatarSuccess(payload));
+  } catch (error) {
+    yield put(updateAvatarFailure(error));
+    const updateAvatarFailureModalData = {
+      modalType: "SYSTEM_MESSAGE",
+      modalProps: {
+        text: error.message
+      }
+    };
+    yield put(openModal(updateAvatarFailureModalData));
+  }
+}
+
 // root saga creator for users with all the tiggering generation functions of the saga
 export function* userSagas() {
   yield all([
@@ -219,6 +249,7 @@ export function* userSagas() {
     call(onEmailSignIn),
     call(onSignUpStart),
     call(onCheckUserSessionStart),
-    call(onSignOutStart)
+    call(onSignOutStart),
+    call(onUpdateAvatarStart)
   ]);
 }

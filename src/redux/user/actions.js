@@ -53,3 +53,18 @@ export const signUpFailure = error => ({
   type: USER.SIGN_UP_FAILURE,
   payload: error
 });
+
+export const updateAvatarStart = url => ({
+  type: USER.UPDATE_AVATAR_START,
+  payload: url
+});
+
+export const updateAvatarSuccess = url => ({
+  type: USER.UPDATE_AVATAR_SUCCESS,
+  payload: url
+});
+
+export const updateAvatarFailure = error => ({
+  type: USER.UPDATE_AVATAR_FAILURE,
+  payload: error
+});

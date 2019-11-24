@@ -41,6 +41,19 @@ const userReducer = (state = INITIAL_STATE, action) => {
         ...state,
         isChecking: false
       };
+    case USER.UPDATE_AVATAR_SUCCESS:
+      return {
+        ...state,
+        currentUser: {
+          ...state.currentUser,
+          photoURL: action.payload
+        }
+      };
+    case USER.UPDATE_AVATAR_FAILURE:
+      return {
+        ...state,
+        error: action.payload
+      };
     default:
       return state;
   }

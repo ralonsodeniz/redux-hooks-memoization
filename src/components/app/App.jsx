@@ -35,16 +35,22 @@ const App = () => {
       <header>
         <AppLogo />
       </header>
-      <section>
-        {currentUser ? <User /> : <SignInSignUpContainer />}
-        <Counter />
-        <VideoInput />
-        {showModal && (
-          <Modal>
-            <InnerModal />
-          </Modal>
-        )}
-      </section>
+      {!currentUser ? (
+        <section>
+          <SignInSignUpContainer />
+        </section>
+      ) : (
+        <section>
+          <User />
+          <Counter />
+          <VideoInput />
+        </section>
+      )}
+      {showModal && (
+        <Modal>
+          <InnerModal />
+        </Modal>
+      )}
     </AppContainer>
   );
 };
