@@ -1,5 +1,4 @@
 {
-  "homepage": "https://ralonsodeniz.github.io/redux-hooks-memoization",
   "name": "redux-hooks-memoization",
   "version": "0.1.0",
   "private": true,
@@ -17,8 +16,6 @@
     "styled-components": "^4.4.1"
   },
   "scripts": {
-    "predeploy": "yarn run build",
-    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -39,7 +36,5 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "gh-pages": "^2.1.1"
-  }
+  "devDependencies": {}
 }

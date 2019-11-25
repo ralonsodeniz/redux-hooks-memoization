@@ -17,7 +17,8 @@ import { ReactComponent as UserIcon } from "../../assets/user.svg";
 
 import {
   UserAvatarContainer,
-  LogoContainer,
+  AvatarContainer,
+  CircularProgressContainer,
   UpdateAvatarContainer,
   InputFileContainer,
   LabelFileContainer
@@ -101,22 +102,22 @@ const UserAvatar = () => {
 
   return (
     <UserAvatarContainer>
-      {loading ? (
-        <LogoContainer>
-          <CircularProgress
-            radius={34}
-            progress={progress}
-            color={"black"}
-            backgroundColor={"transparent"}
-          />
-        </LogoContainer>
-      ) : userPhotoURL !== "" ? (
-        <ClippedImage url={userPhotoURL} alt={"User Avatar"} />
-      ) : (
-        <LogoContainer>
+      <AvatarContainer>
+        {loading ? (
+          <CircularProgressContainer>
+            <CircularProgress
+              radius={34}
+              progress={progress}
+              color={"black"}
+              backgroundColor={"transparent"}
+            />
+          </CircularProgressContainer>
+        ) : userPhotoURL !== "" ? (
+          <ClippedImage url={userPhotoURL} alt={"User Avatar"} />
+        ) : (
           <UserIcon />
-        </LogoContainer>
-      )}
+        )}
+      </AvatarContainer>
       <UpdateAvatarContainer>
         <InputFileContainer
           type="file"

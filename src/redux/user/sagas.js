@@ -100,6 +100,7 @@ export function* signUp({ payload }) {
       }
     };
     yield put(openModal(signUpFailureModalData));
+    yield auth.signOut();
   }
 }
 

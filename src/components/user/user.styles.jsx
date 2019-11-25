@@ -7,7 +7,7 @@ const UserDataStyles = css`
 
 export const UserContainer = styled.div`
   width: 30vw;
-  height: 500px;
+  height: auto;
   background-color: #fafafa;
   box-shadow: 0 0 32px 8px rgba(0, 0, 0, 0.3);
   border-radius: 32px;
@@ -26,7 +26,13 @@ export const UserAvatarContainer = styled.div`
   width: 100%;
 `;
 
-export const LogoContainer = styled.div`
+export const AvatarContainer = styled.div`
+  width: 150px;
+  height: 150px;
+  margin-bottom: 10px;
+`;
+
+export const CircularProgressContainer = styled.div`
   width: 150px;
   height: 150px;
   margin-bottom: 10px;
@@ -83,7 +89,7 @@ export const UserDataContainer = styled.div`
   display: grid;
   justify-content: space-evenly;
   width: 100%;
-  grid-template: auto/auto auto;
+  grid-template: auto/auto;
   grid-template-areas:
     "displayName age"
     "gender country"
@@ -114,12 +120,13 @@ export const EmailContainer = styled.div`
   grid-area: email;
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
 `;
 
 export const UserDataTextTitle = styled.h4`
   font-weight: 400;
 `;
 
-export const UserDataText = styled.h5`
+export const UserDataText = styled.span`
   font-weight: 100;
 `;
